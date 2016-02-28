@@ -5,12 +5,27 @@ import datetime
 
 html = urllib2.urlopen("https://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx")
 
-soup = BeautifulSoup(html, "html5lib")
-print html
+soup = BeautifulSoup(html)
+
+def get_date(gap):
+    date = datetime.date.today() + datetime.timedelta(days=gap)
+    year = str(date.year)
+    month = date.month
+    day = date.day
+    if month < 10:
+        month = "0" + str(month)
+    else:
+        month = str(month)
+    if day < 10:
+        day = "0" + str(day)
+    else:
+        day = str(day)
+
+    today = year + "." + month + "." + day
+    return today
 
 table = []
 num = 1
-
 exist = 1
 
 while exist != None:
@@ -37,25 +52,20 @@ while exist != None:
 
 #print(table)
 
-date = datetime.date.today()
-year = str(date.year)
-month = date.month
-day = date.day
-if month < 10:
-    month = "0" + str(month)
-else:
-    month = str(month)
-if day < 10:
-    day = "0" + str(day)
-else:
-    day = str(day)
 
-today = year + "." + month + "." + day
+today = get_date(0)
 today_list = []
 #today = "2016.02.08"
 
 for one in table:
     if one[0] == today:
+        today_list.append(one)
+
+print today_list
+
+tomorrow = get_date(1)
+for one in table:
+    if one[0] == tomorrow:
         today_list.append(one)
 
 print today_list
