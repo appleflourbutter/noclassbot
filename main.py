@@ -1,14 +1,18 @@
 # coding: utf-8
-import urllib2
+import urllib
 from bs4 import BeautifulSoup
 import datetime
 import tweepy
+import sys
+import csv
+import pickle
+import json
+#import hashlib
 
 f = open('api.txt')
 api = f.readlines() # 1行毎にファイル終端まで全て読む(改行文字も含まれる)
 f.close()
 consumer_key = api[0][:-1]
-print api[2][:-1]
 consumer_secret = api[1][:-1]
 access_token = api[2][:-1]
 access_secret = api[3][:-1]
@@ -17,8 +21,8 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)
 api = tweepy.API(auth)
 
-html = urllib2.urlopen("https://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx")
-soup = BeautifulSoup(html)
+html = urllib.request.urlopen("https://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx")
+soup = BeautifulSoup(html, "html.parser")
 
 def get_date(gap):
     date = datetime.date.today() + datetime.timedelta(days=gap)
@@ -41,7 +45,7 @@ table = []
 num = 1
 exist = 1
 
-print "making list"
+print("making list")
 while exist != None:
     num += 1
     if num < 10:
@@ -65,28 +69,61 @@ while exist != None:
 
 #print(table)
 
+if sys.argv[1] == "today":
+    today = get_date(0)
+    today = "2016.02.16"
+    today_list = []
+    #today = "2016.02.08"
 
-today = get_date(0)
-today_list = []
-#today = "2016.02.08"
+    for one in table:
+        if one[0] == today:
+            today_list.append(one)
 
-for one in table:
-    if one[0] == today:
-        today_list.append(one)
+    for one in today_list:
+        text2tweet =u"今日の休講情報\n" + one[2] + u" " + one[4] + u" " + one[5] + u"先生 " + one[1] + u"\n詳しくはこちらhttps://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx"
+        print(text2tweet)
+        api.update_status(text2tweet)
 
-print today_list
+elif sys.argv[1] == "tomorrow":
+    tomorrow = get_date(1)
+    tomorrow = "2016.02.16"
+    tomorrow_list = []
+    for one in table:
+        if one[0] == tomorrow:
+            tomorrow_list.append(one)
 
-tomorrow = get_date(1)
-tomorrow = "2016.02.08"
-tomorrow_list = []
-print tomorrow
-for one in table:
-    if one[0] == tomorrow:
-        today_list.append(one)
+    for one in tomorrow_list:
+        text2tweet =u"明日の休講情報\n" + one[2] + u" " + one[4] + u" " + one[5] + u"先生 " + one[1] + u"\n詳しくはこちらhttps://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx"
+        print(text2tweet)
+        api.update_status(text2tweet)
 
-print tomorrow_list
+elif sys.argv[1] == "new":
+    prev_list = []
+    new_list = []
 
-for one in tomorrow_list:
-    api.update_status("明日の休講情報")
+    with open("data.json", 'r') as f:
+        prev_list = json.load(f)
 
-api.update_status("Twitter APIからの投稿のテストです")
+    #print(prev_list)
+    #print(table)
+    if table != prev_list:
+        print(1)
+    else:
+        print(2)
+    for one in table:
+        #prev = [x for x in prev_list if x == one]
+        for prev in prev_list:
+            if prev == one:
+                break
+        else:
+            new_list.append(one)
+    print(new_list)
+    for one in new_list:
+        text2tweet =u"新着の休講情報\n" + one[2] + u" " + one[4] + u" " + one[5] + u"先生 " + one[1] + u"\n詳しくはこちらhttps://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx"
+        print(text2tweet)
+        api.update_status(text2tweet)
+
+
+
+with open("data.json", 'w') as f:
+    json.dump(table, f)
