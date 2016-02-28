@@ -1,2 +1,2 @@
 # noclassbot
-# ICUの休講情報botのソースコードです
+ICUの休講情報botのソースコードです
