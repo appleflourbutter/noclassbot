@@ -4,13 +4,13 @@ from bs4 import BeautifulSoup
 import datetime
 import tweepy
 import sys
-import csv
-import pickle
+#import csv
+#import pickle
 import json
 #import hashlib
 
 f = open('api.txt')
-api = f.readlines() # 1行毎にファイル終端まで全て読む(改行文字も含まれる)
+api = f.readlines()
 f.close()
 consumer_key = api[0][:-1]
 consumer_secret = api[1][:-1]
