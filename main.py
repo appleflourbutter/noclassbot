@@ -8,6 +8,7 @@ import sys
 #import pickle
 import json
 #import hashlib
+from tweepy.auth import OAuthHandler
 
 f = open('api.txt')
 api = f.readlines()
