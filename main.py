@@ -70,9 +70,9 @@ while exist != None:
 #print(table)
 
 if sys.argv[1] == "today":
-    print("今日の休講情報をつぶやきます")
+    print(u"今日の休講情報をつぶやきます")
     today = get_date(0)
-    today = "2016.02.16"
+    #today = "2016.02.16"
     today_list = []
     #today = "2016.02.08"
 
@@ -86,9 +86,9 @@ if sys.argv[1] == "today":
         api.update_status(text2tweet)
 
 elif sys.argv[1] == "tomorrow":
-    print("明日の休講情報をつぶやきます")
+    print(u"明日の休講情報をつぶやきます")
     tomorrow = get_date(1)
-    tomorrow = "2016.02.16"
+    #tomorrow = "2016.02.16"
     tomorrow_list = []
     for one in table:
         if one[0] == tomorrow:
@@ -123,6 +123,29 @@ elif sys.argv[1] == "new":
     print(new_list)
     for one in new_list:
         text2tweet =u"新着の休講情報\n" + one[2] + u" " + one[4] + u" " + one[5] + u"先生 " + one[1] + u"\n詳しくはこちらhttps://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx"
+        print(text2tweet)
+        api.update_status(text2tweet)
+
+if sys.argv[1] == "day":
+    month = sys.argv[2]
+    day = sys.argv[3]
+    print(unicode(month) + u"月" unicode(day) + u"日" + +u"の休講情報をつぶやきます")
+    month = str(month)
+    day = str(day)
+    if len(month) = 1:
+        month = "0" + month
+    if len(day) = 1:
+        month = "0" + day
+    today = "2016." + month + "." + day
+    today_list = []
+    #today = "2016.02.08"
+
+    for one in table:
+        if one[0] == today:
+            today_list.append(one)
+
+    for one in today_list:
+        text2tweet =unicode(month) + u"月" unicode(day) + u"日" + u"の休講情報をつぶやきます"u"今日の休講情報\n" + one[2] + u" " + one[4] + u" " + one[5] + u"先生 " + one[1] + u"\n詳しくはこちらhttps://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx"
         print(text2tweet)
         api.update_status(text2tweet)
 
