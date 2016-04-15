@@ -9,7 +9,7 @@ import sys
 import json
 #import hashlib
 
-f = open('api.txt')
+f = open('./api.txt')
 api = f.readlines()
 f.close()
 consumer_key = api[0][:-1]
