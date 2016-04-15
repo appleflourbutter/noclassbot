@@ -126,7 +126,5 @@ elif sys.argv[1] == "new":
         print(text2tweet)
         api.update_status(text2tweet)
 
-
-
 with open("data.json", 'w') as f:
     json.dump(table, f)
