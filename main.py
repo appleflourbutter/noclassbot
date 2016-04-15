@@ -8,8 +8,9 @@ import sys
 #import pickle
 import json
 #import hashlib
+import os
 
-f = open('./api.txt')
+f = open(os.path.dirname(__file__) + '/api.txt')
 api = f.readlines()
 f.close()
 consumer_key = api[0][:-1]
