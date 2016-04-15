@@ -129,7 +129,7 @@ elif sys.argv[1] == "new":
 if sys.argv[1] == "day":
     month = sys.argv[2]
     day = sys.argv[3]
-    print(unicode(month) + u"月" unicode(day) + u"日" + +u"の休講情報をつぶやきます")
+    print(unicode(month) + u"月" unicode(day) + u"日" + u"の休講情報をつぶやきます")
     month = str(month)
     day = str(day)
     if len(month) = 1:
@@ -145,7 +145,7 @@ if sys.argv[1] == "day":
             today_list.append(one)
 
     for one in today_list:
-        text2tweet = unicode(month) + u"月" unicode(day) + u"日" + u"の休講情報\n" + one[2] + u" " + one[4] + u" " + one[5] + u"先生 " + one[1] + u"\n詳しくはこちらhttps://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx"
+        text2tweet = unicode(month) + u"月" unicode(day) + u"日" + u"の休講情報\n" + one[2] + u" " + one[4] + u" " + one[5] + u"先生 " + one[1] + u"\n詳しくはこちら https://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx"
         print(text2tweet)
         api.update_status(text2tweet)
 
