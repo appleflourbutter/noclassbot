@@ -8,7 +8,6 @@ import sys
 #import pickle
 import json
 #import hashlib
-from tweepy.auth import OAuthHandler
 
 f = open('api.txt')
 api = f.readlines()
@@ -71,6 +70,7 @@ while exist != None:
 #print(table)
 
 if sys.argv[1] == "today":
+    print("今日の休講情報をつぶやきます")
     today = get_date(0)
     today = "2016.02.16"
     today_list = []
@@ -86,6 +86,7 @@ if sys.argv[1] == "today":
         api.update_status(text2tweet)
 
 elif sys.argv[1] == "tomorrow":
+    print("明日の休講情報をつぶやきます")
     tomorrow = get_date(1)
     tomorrow = "2016.02.16"
     tomorrow_list = []
@@ -99,6 +100,7 @@ elif sys.argv[1] == "tomorrow":
         api.update_status(text2tweet)
 
 elif sys.argv[1] == "new":
+    print("新着の休講情報をつぶやきます")
     prev_list = []
     new_list = []
 
