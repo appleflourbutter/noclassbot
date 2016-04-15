@@ -105,7 +105,7 @@ elif sys.argv[1] == "new":
     prev_list = []
     new_list = []
 
-    with open("data.json", 'r') as f:
+    with open(os.path.dirname(__file__) + "/data.json", 'r') as f:
         prev_list = json.load(f)
 
     #print(prev_list)
@@ -150,5 +150,5 @@ if sys.argv[1] == "day":
         print(text2tweet)
         api.update_status(text2tweet)
 
-with open("data.json", 'w') as f:
+with open(os.path.dirname(__file__) + "/data.json", 'w') as f:
     json.dump(table, f)
