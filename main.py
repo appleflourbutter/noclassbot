@@ -127,16 +127,16 @@ elif sys.argv[1] == "new":
         api.update_status(text2tweet)
 
 if sys.argv[1] == "day":
-    month = sys.argv[2]
-    day = sys.argv[3]
-    print(unicode(month) + u"月" unicode(day) + u"日" + u"の休講情報をつぶやきます")
-    month = str(month)
-    day = str(day)
-    if len(month) = 1:
-        month = "0" + month
-    if len(day) = 1:
-        month = "0" + day
-    today = "2016." + month + "." + day
+    set_month = sys.argv[2]
+    set_day = sys.argv[3]
+    print(str(set_month) + u"月" + str(set_day) + u"日の休講情報をつぶやきます")
+    set_month = str(set_month)
+    set_day = str(set_day)
+    if len(set_month) == 1:
+        set_month = "0" + set_month
+    if len(set_day) == 1:
+        set_month = "0" + set_day
+    today = "2016." + set_month + "." + set_day
     today_list = []
     #today = "2016.02.08"
 
@@ -145,7 +145,7 @@ if sys.argv[1] == "day":
             today_list.append(one)
 
     for one in today_list:
-        text2tweet = unicode(month) + u"月" unicode(day) + u"日" + u"の休講情報\n" + one[2] + u" " + one[4] + u" " + one[5] + u"先生 " + one[1] + u"\n詳しくはこちら https://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx"
+        text2tweet = str(set_month) + u"月" + str(set_day) + u"日" + u"の休講情報\n" + one[2] + u" " + one[4] + u" " + one[5] + u"先生 " + one[1] + u"\n詳しくはこちら https://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx"
         print(text2tweet)
         api.update_status(text2tweet)
 
