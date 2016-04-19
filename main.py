@@ -123,7 +123,7 @@ elif sys.argv[1] == "new":
             new_list.append(one)
     print(new_list)
     for one in new_list:
-        text2tweet =u"新着の休講情報\n" + one[2] + u" " + one[4] + u" " + one[5] + u"先生 " + one[1] + u"\n詳しくはこちらhttps://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx"
+        text2tweet =u"新着の休講情報\n" + one[2] + u" " + one[4] + u" " + one[5] + u"先生 " + one[0] + u" " + one[1] + u"\n詳しくはこちらhttps://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx"
         print(text2tweet)
         api.update_status(text2tweet)
 
