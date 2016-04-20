@@ -4,12 +4,10 @@ from bs4 import BeautifulSoup
 import datetime
 import tweepy
 import sys
-#import csv
-#import pickle
 import json
-#import hashlib
 import os
 
+#Twitterの認証
 f = open(os.path.dirname(__file__) + '/api.txt')
 api = f.readlines()
 f.close()
@@ -22,9 +20,11 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)
 api = tweepy.API(auth)
 
+#
 html = urllib.request.urlopen("https://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx")
 soup = BeautifulSoup(html, "html.parser")
 
+#日時を取得
 def get_date(gap):
     date = datetime.date.today() + datetime.timedelta(days=gap)
     year = str(date.year)
@@ -46,6 +46,7 @@ table = []
 num = 1
 exist = 1
 
+#とりまリストをつくる
 print("making list")
 while exist != None:
     num += 1
@@ -70,6 +71,7 @@ while exist != None:
 
 #print(table)
 
+#今日の休講情報
 if sys.argv[1] == "today":
     print(u"今日の休講情報をつぶやきます")
     today = get_date(0)
@@ -77,20 +79,23 @@ if sys.argv[1] == "today":
     today_list = []
     #today = "2016.02.08"
 
+    #今日の情報だけ抽出
     for one in table:
         if one[0] == today:
             today_list.append(one)
 
+    #つぶやく
     for one in today_list:
         text2tweet =u"今日の休講情報\n" + one[2] + u" " + one[4] + u" " + one[5] + u"先生 " + one[1] + u"\n詳しくはこちらhttps://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx"
         print(text2tweet)
         api.update_status(text2tweet)
 
+#明日の休講情報
 elif sys.argv[1] == "tomorrow":
     print(u"明日の休講情報をつぶやきます")
-    tomorrow = get_date(1)
-    #tomorrow = "2016.02.16"
+    tomorrow = get_date(1)#明日の日時を取得
     tomorrow_list = []
+
     for one in table:
         if one[0] == tomorrow:
             tomorrow_list.append(one)
@@ -100,20 +105,26 @@ elif sys.argv[1] == "tomorrow":
         print(text2tweet)
         api.update_status(text2tweet)
 
+#新着の休講情報
 elif sys.argv[1] == "new":
     print("新着の休講情報をつぶやきます")
     prev_list = []
     new_list = []
 
+    #前回取得した情報を読み込み
     with open(os.path.dirname(__file__) + "/data.json", 'r') as f:
         prev_list = json.load(f)
 
     #print(prev_list)
     #print(table)
+
+    #これなんだっけ…？なにしてるのかよくわかんない。
     if table != prev_list:
         print(1)
     else:
         print(2)
+
+    #新旧を比較
     for one in table:
         #prev = [x for x in prev_list if x == one]
         for prev in prev_list:
@@ -122,11 +133,13 @@ elif sys.argv[1] == "new":
         else:
             new_list.append(one)
     print(new_list)
+
     for one in new_list:
         text2tweet =u"新着の休講情報\n" + one[2] + u" " + one[4] + u" " + one[5] + u"先生 \n" + one[0] + u" " + one[1] + u"\n詳しくはこちらhttps://campus.icu.ac.jp/public/ehandbook/DisplayNoClass.aspx"
         print(text2tweet)
         api.update_status(text2tweet)
 
+#テスト用。特定の日時の休講情報をつぶやく
 if sys.argv[1] == "day":
     set_month = sys.argv[2]
     set_day = sys.argv[3]
@@ -150,5 +163,6 @@ if sys.argv[1] == "day":
         print(text2tweet)
         api.update_status(text2tweet)
 
+#今回取得した情報を保存
 with open(os.path.dirname(__file__) + "/data.json", 'w') as f:
     json.dump(table, f)
